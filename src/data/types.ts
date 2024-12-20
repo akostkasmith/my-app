@@ -1,0 +1,22 @@
+export enum Category {
+  Uncategorized = "Uncategorized",
+  Bakery = "Bakery",
+  FruitsAndVegetables = "Fruits & Vegetables",
+  Meat = "Meat",
+  FishAndSeafood = "Fish & Seafood",
+  DairyAndEggs = "Dairy & Eggs",
+  Frozen = "Frozen",
+  Beverages = "Beverages",
+  PastaRiceAndBeans = "Pasta, Rice & Beans",
+  CannedFoods = "Canned Foods",
+  DeliAndPreparedFood = "Deli & Prepared Food",
+  SaucesAndCondiments = "Sauces & Condiments",
+  CerealAndBreakfast = "Cereal & Breakfast",
+  Snacks = "Snacks",
+  BakingAndCooking = "Baking & Cooking",
+  HealthAndBeauty = "Health & Beauty",
+  Baby = "Baby",
+  Household = "Household",
+  Pets = "Pets",
+  HomeAndGarden = "Home & Garden"
+}

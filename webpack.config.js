@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = (env, argv) => {
     const isDevelopment = argv.mode === 'development';
@@ -11,6 +12,7 @@ module.exports = (env, argv) => {
             path: path.resolve(__dirname, 'dist'),
             filename: 'js/[name].[contenthash].js',
             clean: true,
+            publicPath: '/',
         },
         devServer: {
             static: {
@@ -65,16 +67,41 @@ module.exports = (env, argv) => {
         plugins: [
             new HtmlWebpackPlugin({
                 template: './public/index.html',
+                favicon: './public/favicon.ico',
             }),
             new MiniCssExtractPlugin({
-                filename: isDevelopment ? 'css/[name].css' : 'css/[name].[contenthash].css',
-                chunkFilename: isDevelopment ? 'css/[id].css' : 'css/[id].[contenthash].css',
+                filename: isDevelopment ? '[name].css' : '[name].[contenthash].css',
+            }),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: 'public',
+                        to: '',
+                        globOptions: {
+                            ignore: ['**/index.html', '**/favicon.ico'],
+                        },
+                    },
+                ],
             }),
         ],
         optimization: {
+            moduleIds: 'deterministic',
+            runtimeChunk: 'single',
             splitChunks: {
-                chunks: 'all',
+                cacheGroups: {
+                    vendor: {
+                        test: /[\\/]node_modules[\\/]/,
+                        name: 'vendors',
+                        chunks: 'all',
+                    },
+                },
             },
         },
+        ignoreWarnings: [
+            {
+                module: /\.(sa|sc|c)ss$/,
+                message: /Deprecation/,
+            },
+        ],
     };
 };
