@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import classes from "./Box.module.scss";
+import FilterList from "../FilterList/FilterList";
 
 import  { Category } from "../../data/types"; 
 
@@ -20,30 +21,35 @@ const Box = ({
 
   const [text, setText] = React.useState("");
   const [items, setItems] = React.useState<listItem[]>([]);
+  const [focused, setFocused] = React.useState(false);
 
   useEffect(() => {
     const itemsJSON = window.localStorage.getItem('list');
     const items = itemsJSON ? JSON.parse(itemsJSON) : [];
 
     if (items) {
-      setItems(items);
+      setItems(items.reverse());
     }
   }, []);
 
-  const handleReturn = () => {
-    if (items) {
-      const newItem = {
-        id: items.length,
-        text: text,
-        category: Category.Uncategorized,
-        completed: false
-      } as listItem;
+  const saveItems = (itemToSave: listItem) => {
+    if (itemToSave.text.length === 0) return;
 
-      const newList = [...items, newItem];
+    if (items) {
+      const newList = [...items, itemToSave];
       setItems(newList);
       window.localStorage.setItem('list', JSON.stringify(newList));
       setText('');
     }
+  }
+
+  const handleReturn = () => {
+    saveItems({
+      id: items.length,
+      text: text,
+      category: Category.Uncategorized,
+      completed: false
+    });
   }
 
   const handleChange = (id: number) => {
@@ -59,11 +65,27 @@ const Box = ({
   }
 
   const handleFocus = () => {
-    console.log("Focus");
+    if (!focused) {
+      setFocused(true);
+    }
   }
-  // const filteredCategories = categories.filter((item) => {
-  //   return item.toLowerCase().includes(text.toLowerCase());
-  // });
+
+  const onSelect = (item: string) => {
+    setText(item);
+    saveItems({
+      id: items.length,
+      text: item,
+      category: Category.Uncategorized,
+      completed: false
+    });
+    setFocused(false);
+  }
+
+  const autoCompleteList = (objects: listItem[]) => {
+    return objects.filter((object1, i, arr) => 
+      arr.findIndex(object2 => (object2.text === object1.text)) === i
+    )
+  }
 
   return ( 
     <div className={classes.container}>
@@ -82,8 +104,19 @@ const Box = ({
             if (e.key === 'Enter' || e.key === 'Return') {
               handleReturn();
             }
+            if (e.key === 'Escape') {
+              setFocused(false);
+            }
           }}
         />
+        {
+          focused &&
+          <FilterList 
+            term={text} 
+            termList={autoCompleteList(items).map((item) => item.text)} 
+            onSelect={onSelect}
+            />
+        }
         {items.length > 0 ? 
           (<ul className={classes.autoCompleteList}>
             {items.map((item) => 

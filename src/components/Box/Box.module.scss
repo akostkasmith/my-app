@@ -12,6 +12,9 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
+.input {
+    width: 100%;
+}
 
 .autoCompleteList {
     list-style: none;
@@ -21,8 +24,11 @@
     li {
         text-align: left;
         color: #fff;
-        padding: 5px 10px;
+        padding: 5px 5px;
         cursor: pointer;
         font-size: 14px;
+        input[type=checkbox] {
+            margin-right: 5px;
+        }
     }
   }

@@ -1,10 +1,11 @@
 import React from "react";
-import { categories } from "../../data/types";
+import { Category } from "../../data/types";
 
 interface listItem {
   id: string;
   text: string;
-  category: typeof categories[number]
+  category: Category;
+  completed: boolean;
 }
 
 const useStorageState = (key: string, initialValue: listItem[]) => {

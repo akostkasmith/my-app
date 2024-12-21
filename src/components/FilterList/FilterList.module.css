@@ -1,0 +1,30 @@
+.highlight {
+  font-weight: bold;
+}
+
+.container {
+  position: relative;
+}
+
+.autoCompleteList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  background-color: #fefefe;
+  border: 2px solid #eee;
+  position: absolute;
+  width: 100%;
+}
+
+.autoCompleteListItem {
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px;
+  text-align: left;
+}
+
+.autoCompleteListItem:hover {
+  background-color: #333;
+  color: #fff;
+}
